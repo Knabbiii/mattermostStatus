@@ -12,7 +12,16 @@ fi
 # --- Step 2: Install dependencies ---
 echo "Installing dependencies..."
 sudo apt install -y python3-gi gir1.2-appindicator3-0.1
+if [ ! -d "venv" ]; then
+  echo "Creating virtual environment..."
+  python3 -m venv venv
+fi
+
+echo "Activating venv and installing requirements..."
+source venv/bin/activate
+pip install --upgrade pip
 pip install -r requirements.txt
+deactivate
 
 # --- Step 3: Offer systemd autostart ---
 read -p "Do you want to enable automatic startup via systemd (user mode)? [y/N]: " ENABLE_SYSTEMD
