@@ -35,10 +35,7 @@ Then edit `.env` with your credentials.
 
 ## 🗾 Mattermost Setup
 
-1. Log in to your Mattermost instance.
-2. Go to **Account Settings → Security → Personal Access Tokens**.
-3. (If tokens are disabled, ask your admin to enable them.)
-4. Fill your Mattermost URL, username and password (or token if you modify the script to use it) in `.env`.
+1. Fill your Mattermost URL, username and password (or token if you modify the script to use it) in `.env`.
 
 Example:
 
