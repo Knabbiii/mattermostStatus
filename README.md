@@ -25,13 +25,24 @@ cd mm_spotify_status
 ### 2. Run setup
 
 ```bash
-./setup.sh
+bash setup.sh
 ```
 
-This installs all dependencies and creates a `.env` file.
-Then edit `.env` with your credentials.
+The setup automatically:
 
-During setup, you can optionally enable **autostart via systemd** (see below).
+* Installs all system dependencies (GTK, GObject, Cairo, etc.)
+* Creates and configures a Python virtual environment
+* Installs only lightweight Python packages (`requests`, `python-dotenv`)
+* Offers optional autostart via `systemd`
+
+🟡 **Important:** After the first run, open the `.env` file and fill in your Mattermost and Spotify credentials.
+Example:
+
+```bash
+nano .env
+```
+
+During setup, you’ll see a reminder to edit this file before starting the app.
 
 ---
 
@@ -122,7 +133,7 @@ rm ~/.config/systemd/user/mm-spotify-tray.service
 If you didn’t enable autostart, you can still run manually:
 
 ```bash
-python3 mm_spotify_status.py &
+./venv/bin/python mm_spotify_status.py &
 ```
 
 A tray icon will appear.
@@ -133,10 +144,10 @@ Toggle “Spotify Status aktiv” to start or stop syncing.
 ## 🧩 Troubleshooting
 
 * **GTK / AppIndicator missing:**
-  Install manually:
+  The setup installs these automatically, but if you ever need to reinstall:
 
   ```bash
-  sudo apt install python3-gi gir1.2-appindicator3-0.1
+  sudo apt install python3-gi python3-gi-cairo gir1.2-gtk-3.0 gir1.2-appindicator3-0.1
   ```
 * **Spotify not showing anything:**
   Make sure Spotify is playing on the same account linked in `.env`.
@@ -147,11 +158,17 @@ Toggle “Spotify Status aktiv” to start or stop syncing.
 
 ## 🧠 Dependencies
 
-* Python 3.9+
-* PyGObject
+Installed automatically by setup:
+
+* GTK 3 runtime (gir1.2-gtk-3.0)
+* AppIndicator support (gir1.2-appindicator3-0.1)
+* GObject and Cairo libs (python3-gi, python3-gi-cairo)
+* Virtual environment tools (python3-venv, pip)
+
+Python-only (in venv):
+
 * requests
 * python-dotenv
-* GTK / AppIndicator (system packages)
 
 ---
 
