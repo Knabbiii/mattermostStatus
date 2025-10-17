@@ -31,11 +31,17 @@ cd mm_spotify_status
 This installs all dependencies and creates a `.env` file.
 Then edit `.env` with your credentials.
 
+During setup, you can optionally enable **autostart via systemd** (see below).
+
 ---
 
-## 🗾 Mattermost Setup
+## 🧾 Mattermost Setup
 
-1. Fill your Mattermost URL, username and password (or token if you modify the script to use it) in `.env`.
+1. Log in to your Mattermost instance.
+2. Go to **Account Settings → Security → Personal Access Tokens**.
+3. (If tokens are disabled, ask your admin to enable them.)
+4. Create a new token and note it down *(you can skip this if you use username/password login, as the script does)*.
+5. Fill your Mattermost URL, username and password (or token if you modify the script to use it) in `.env`.
 
 Example:
 
@@ -75,7 +81,45 @@ SPOTIFY_REFRESH_TOKEN=long_refresh_token_here
 
 ---
 
+## 🔁 Autostart with systemd (optional)
+
+During setup, you’ll be asked whether you want to enable automatic startup using **systemd (user mode)**.
+
+If enabled, the installer creates this file automatically:
+
+```
+~/.config/systemd/user/mm-spotify-tray.service
+```
+
+It uses your `.env` for configuration (no secrets inside the file) and runs the app automatically after login.
+
+You can manage it manually with:
+
+```bash
+systemctl --user start mm-spotify-tray.service     # start manually
+systemctl --user stop mm-spotify-tray.service      # stop
+systemctl --user enable mm-spotify-tray.service    # enable autostart
+systemctl --user disable mm-spotify-tray.service   # disable autostart
+```
+
+To view logs:
+
+```bash
+journalctl --user -u mm-spotify-tray -f
+```
+
+To remove the service entirely:
+
+```bash
+systemctl --user disable --now mm-spotify-tray.service
+rm ~/.config/systemd/user/mm-spotify-tray.service
+```
+
+---
+
 ## 🚀 Run
+
+If you didn’t enable autostart, you can still run manually:
 
 ```bash
 python3 mm_spotify_status.py &
@@ -101,7 +145,7 @@ Toggle “Spotify Status aktiv” to start or stop syncing.
 
 ---
 
-## 🧐 Dependencies
+## 🧠 Dependencies
 
 * Python 3.9+
 * PyGObject
